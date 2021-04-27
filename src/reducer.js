@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux'
-
 const initialState = {
     bounds: [
         [53,-46,0.5],
