@@ -15,21 +15,22 @@ function Heatmap(props){
     //    [latlongBounds.getSouthWest().lat, latlongBounds.getSouthWest().long],
     //    [latlongBounds.getSouthEast().lat, latlongBounds.getSouthEast().long]
     //  ];
-    let points = [];
+    var points = [];
     fetch('https://heatmap-proj-backend.herokuapp.com/geoip')
       .then(res => res.json())
       .then((data) => {
-        points = data.map((point) => {
-          return [parseFloat(point[0]), parseFloat(point[1])];
-        });
-     })
 
-    //  const points = props.addressPoints
-    //  ? props.addressPoints.map((p) => {
-    //    return [p[0], p[1], p[2]]; // lat lng intensity
-    //    })
-    //  : [];
-    L.heatLayer(points).addTo(map);
+        points = data.map((point) => {
+          return [parseFloat(point[0]), parseFloat(point[1]), 1];
+        })
+        .filter((point) => {
+            return !isNaN(point[0]) && !isNaN(point[1]);
+        });
+        L.heatLayer(points).addTo(map);
+      })
+      .catch(error => {
+        console.log(error);
+      });
    }, []);
    return null;
 }
